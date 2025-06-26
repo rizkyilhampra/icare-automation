@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+      args:
+        - PORT=${PORT:-3000}
+    container_name: icare
+    ports:
+      - "${PORT:-80}:${PORT:-3000}"
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Makassar
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - icare-network
+
+networks:
+  icare-network:
+    driver: bridge

@@ -1,0 +1,105 @@
+:root {
+    --plus-jakarta-sans-font: 'Plus Jakarta Sans', sans-serif;
+    --jetbrains-mono-font: 'JetBrains Mono', monospace;
+    --background-color: #000;
+    --text-color: #fff;
+    --card-background: #111;
+    --border-color: #333;
+    --pending-color: #f39c12;
+    --success-color: #2ecc71;
+    --failed-color: #e74c3c;
+}
+
+body {
+    font-family: var(--plus-jakarta-sans-font);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #999;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.button {
+    font-family: var(--plus-jakarta-sans-font);
+    background-color: var(--pending-color);
+    color: var(--background-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    background-color: #ffb84d;
+}
+
+.stat-card {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.stat-card h2 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+.stat-card p {
+    font-family: var(--jetbrains-mono-font);
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+#pending-count { color: var(--pending-color); }
+#success-count { color: var(--success-color); }
+#failed-count { color: var(--failed-color); }
+
+footer {
+    margin-top: 4rem;
+    color: #666;
+    font-size: 0.9rem;
+} 
