@@ -73,7 +73,7 @@ export async function agreeToVerification(browser: Browser, verificationUrl: str
   const page = await context.newPage();
 
   try {
-    await page.goto(verificationUrl);
+    await page.goto(verificationUrl, { waitUntil: 'networkidle' });
     
     const agreeButtonSelector = 'button.swal2-confirm:has-text("Setuju")';
     
@@ -82,7 +82,15 @@ export async function agreeToVerification(browser: Browser, verificationUrl: str
     logger.info('Found "Setuju" button, clicking...', { service: 'icare' });
     await page.click(agreeButtonSelector);
     
-    await page.waitForTimeout(5000); 
+    await Promise.race([
+      page.waitForSelector('.swal2-container', { state: 'detached', timeout: 10000 }),
+      page.waitForFunction(() => {
+        const loadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"], .swal2-loading');
+        return loadingElements.length === 0;
+      }, { timeout: 10000 })
+    ]).catch(() => {
+      logger.warn('No clear completion signal detected after clicking agree button', { service: 'icare' });
+    });
 
     logger.info('Successfully clicked "Setuju" button.', { service: 'icare' });
     
