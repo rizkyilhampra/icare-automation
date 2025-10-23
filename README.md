@@ -2,23 +2,8 @@
 
 **icare** is an automated service designed to streamline patient data processing between a Hospital Information System (SIMRS) and the Indonesian National Health Insurance (BPJS) web portal. It periodically fetches patient data, creates processing jobs, and uses browser automation to submit the data, all while providing a real-time web interface for monitoring.
 
-## ⚠️ Disclaimer
-
-This project, **icare**, is designed to automate specific patient verification tasks within the BPJS web portal. It is developed for **internal operational efficiency, research, and educational purposes**, addressing challenges with manual compliance.
-
-**Important Considerations:**
-
-* **BPJS Policy & Expected Use:** The BPJS iCare process is officially intended for manual execution by medical professionals while accessing relevant patient data. This automation serves to streamline an internal workflow where manual compliance has been challenging, leading to official warnings from BPJS.
-* **Potential for Non-Compliance:** While this tool aims to improve internal efficiency, its use of automation for actions expected to be manual may be viewed by BPJS as non-compliant or unusual access. There is a risk of further warnings, or other actions from BPJS.
-* **Terms of Service:** Users of this software are responsible for ensuring their usage complies with all current and future terms of service, guidelines, and policies set forth by BPJS Kesehatan.
-* **No Guarantees & Risk Assumption:** The author and contributors assume no responsibility for any direct or indirect issues, damages, or consequences arising from the use of this software, including but not limited to:
-    * Further reprimands, warnings, or sanctions from BPJS.
-    * Disruptions or suspensions of BPJS portal access.
-    * Any legal, financial, or operational implications for the organization or patients.
-    * Accuracy or integrity of data submitted through automated means.
-    * Other unforeseen risks associated with automating external web portals.
-
-**By utilizing this project, you acknowledge and accept these inherent risks. It is strongly recommended that this tool be used only within environments where explicit internal authorization has been obtained, and all users understand the potential implications. Ongoing communication with BPJS regarding compliance and integration methods is highly advisable.**
+> [!WARNING]
+> This project, **icare**, is designed to automate specific patient verification tasks within the BPJS web portal. It is developed for **internal operational efficiency, research, and educational purposes**, addressing challenges with manual compliance. 
 
 ## ✨ Features
 
@@ -29,7 +14,6 @@ This project, **icare**, is designed to automate specific patient verification t
 - **Graceful Shutdown**: Ensures that running processes are completed before the application shuts down.
 - **Containerized**: Fully containerized with Docker for easy deployment and scalability.
 - **Telegram Notifications**: Sends notifications about job statuses via Telegram.
-
 
 ## 🚀 Getting Started
 
