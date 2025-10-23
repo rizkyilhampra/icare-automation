@@ -1,6 +1,5 @@
 import { getDb } from '../lib/sqlite';
 import { verifyPatient, agreeToVerification } from './bpjsService';
-import { sendTelegramMessage } from './telegram';
 import { Job, Patient } from '../types';
 import logger from '../logger';
 import { delay, DELAYS, getBrowser } from '../lib/browser';
@@ -40,7 +39,6 @@ async function handleFailedJob(job: Job, error: any) {
 
   if (attempt >= maxAttempts) {
     db.prepare('UPDATE jobs SET status = ?, response_data = ? WHERE id = ?').run('failed', errorMessage, job.id);
-    await sendTelegramMessage(`Job ${job.id} failed after ${maxAttempts} attempts: ${errorMessage}`);
     logger.error(`Job ${job.id} failed permanently after ${maxAttempts} attempts`, { service: 'icare', error });
   } else {
     db.prepare('UPDATE jobs SET attempt = ?, response_data = ? WHERE id = ?').run(attempt, errorMessage, job.id);
@@ -108,8 +106,6 @@ export async function processPendingJobs(jobIds?: number[]): Promise<void> {
       await delay(DELAYS.BETWEEN_JOBS, `before processing job ${job.id}`);
       await processJob(job);
     }
-
-    sendTelegramMessage(`${queue.length} jobs processed`);
   } catch (error) {
     logger.error('Error processing jobs', { service: 'icare', error });
   }
