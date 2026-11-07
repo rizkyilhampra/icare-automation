@@ -73,26 +73,27 @@ export async function agreeToVerification(browser: Browser, verificationUrl: str
   const page = await context.newPage();
 
   try {
-    await page.goto(verificationUrl, { waitUntil: 'networkidle' });
-    
-    const agreeButtonSelector = 'button.swal2-confirm:has-text("Setuju")';
-    
-    await page.waitForSelector(agreeButtonSelector, { timeout: 30000 });
-    
-    logger.info('Found "Setuju" button, clicking...', { service: 'icare' });
-    await page.click(agreeButtonSelector);
-    
-    await Promise.race([
-      page.waitForSelector('.swal2-container', { state: 'detached', timeout: 10000 }),
-      page.waitForFunction(() => {
-        const loadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"], .swal2-loading');
-        return loadingElements.length === 0;
-      }, { timeout: 10000 })
-    ]).catch(() => {
-      logger.warn('No clear completion signal detected after clicking agree button', { service: 'icare' });
+    await page.goto(verificationUrl, {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000
     });
 
-    logger.info('Successfully clicked "Setuju" button.', { service: 'icare' });
+    const agreeButton = page.getByRole('button', {
+      name: 'Setuju',
+      exact: true
+    });
+
+    await agreeButton.waitFor({ state: 'visible', timeout: 30000 });
+
+    logger.info('Found "Setuju" button, clicking...', { service: 'icare' });
+    await agreeButton.click({ timeout: 10000 });
+
+    await page.locator('.swal2-container').waitFor({
+      state: 'hidden',
+      timeout: 30000
+    });
+
+    logger.info('Successfully agreed to BPJS verification', { service: 'icare' });
     
     return true;
   } catch (error) {
@@ -132,6 +133,14 @@ export async function verifyPatient(bpjsNumber: string, doctorCode: string): Pro
     const response = await makeApiRequest(requestData, timestamp);
 
     if (!response?.response) {
+      logger.warn('BPJS API returned no response payload', {
+        service: 'icare',
+        metaData: response?.metaData,
+        responseType: typeof response?.response,
+        responseKeys: response && typeof response === 'object'
+          ? Object.keys(response)
+          : []
+      });
       throw new Error('Invalid API response from BPJS');
     }
 
@@ -185,4 +194,4 @@ export async function verifyPatient(bpjsNumber: string, doctorCode: string): Pro
     });
     return null;
   }
-} 
+}

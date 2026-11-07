@@ -57,6 +57,9 @@ const fileFormat = winston.format.combine(
 const consoleFormat = winston.format.combine(
   winston.format.colorize({ all: true }),
   winston.format.timestamp({ format: "HH:mm:ss.SSS" }),
+  winston.format.metadata({
+    fillExcept: ["message", "level", "timestamp", "label"],
+  }),
   winston.format.printf((info) => {
     const { timestamp, level, message, metadata } = info;
     const metaStr = metadata &&

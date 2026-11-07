@@ -39,10 +39,16 @@ async function handleFailedJob(job: Job, error: any) {
 
   if (attempt >= maxAttempts) {
     db.prepare('UPDATE jobs SET status = ?, response_data = ? WHERE id = ?').run('failed', errorMessage, job.id);
-    logger.error(`Job ${job.id} failed permanently after ${maxAttempts} attempts`, { service: 'icare', error });
+    logger.error(`Job ${job.id} failed permanently after ${maxAttempts} attempts`, {
+      service: 'icare',
+      error: errorMessage
+    });
   } else {
     db.prepare('UPDATE jobs SET attempt = ?, response_data = ? WHERE id = ?').run(attempt, errorMessage, job.id);
-    logger.warn(`Job ${job.id} attempt ${attempt} failed. Will retry.`, { service: 'icare', error });
+    logger.warn(`Job ${job.id} attempt ${attempt} failed. Will retry.`, {
+      service: 'icare',
+      error: errorMessage
+    });
   }
 }
 
